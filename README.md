@@ -4,7 +4,7 @@ A calorie and macro tracking API, built as a deliberate exercise in enterprise J
 
 The long-term goal is a transactional ledger for nutrition: every meal is an append-only entry against a daily calorie and macro budget, rather than a mutable running total. The project is being built layer by layer, and the architecture docs describe each layer's purpose *before* it is written — the documentation is part of the exercise, not an afterthought.
 
-📖 **Read the docs on the [GitHub Wiki](https://github.com/AxcelT/Big-Back-Behavior/wiki).** A copy also lives in [`wiki/`](wiki/) in this repo; see [Documentation](#documentation) for why there are two and which to trust.
+📖 **The architecture docs live on the [GitHub Wiki](https://github.com/AxcelT/Big-Back-Behavior/wiki)** — that is the single source of truth for them. See [Documentation](#documentation) for the page index.
 
 > **Status: early scaffold.** The application boots, creates its database schema, and answers a health check. There is no HTTP access to the data yet. See [Current state](#current-state) for exactly what exists.
 
@@ -79,8 +79,6 @@ src/main/resources/
 
 src/test/java/com/example/demo/
 └── DemoApplicationTests.java
-
-wiki/                        layer-by-layer architecture docs
 ```
 
 Of the four conventional Spring layers, only the model exists:
@@ -116,36 +114,35 @@ Repository    database access           (not built)
 Hibernate → H2                          (framework)
 ```
 
-Each layer has a full page explaining its one job, its annotations, the rules for what belongs in it, and the mistakes that produce confusing errors. See [Documentation](#documentation) below.
+Each layer has a full wiki page explaining its one job, its annotations, the rules for what belongs in it, and the mistakes that produce confusing errors — see [Documentation](#documentation) below.
 
 ---
 
 ## Documentation
 
-Every page exists in **two places**, and they are separate git repositories that are kept in step by hand:
-
-| | Published wiki | In-repo copy |
-| --- | --- | --- |
-| Where | [github.com/AxcelT/Big-Back-Behavior/wiki](https://github.com/AxcelT/Big-Back-Behavior/wiki) | [`wiki/`](wiki/) |
-| Repo | `Big-Back-Behavior.wiki.git` (branch `master`) | this repo (branch `main`) |
-| Cross-page links | ✅ work | ❌ render as literal `[[Page Name]]` |
-| Edit in browser | ✅ | ❌ |
-| Reviewed in PRs | ❌ | ✅ |
-
-The pages use `[[Wiki Link]]` syntax, which GitHub only resolves inside a wiki. **Prefer the published wiki for reading** — the in-repo copy has the same words but dead navigation.
-
-The contents are byte-identical as of 2026-08-08. Nothing enforces that, so treat any difference as drift rather than intent, and see [DEV-CONTEXT.md](DEV-CONTEXT.md) for the open decision on which copy becomes the source of truth.
+The architecture docs live on the **[GitHub Wiki](https://github.com/AxcelT/Big-Back-Behavior/wiki)**, and only there. This repo holds code and the two files at its root; it deliberately keeps no copy of the wiki pages.
 
 | Page | Covers |
 | --- | --- |
-| Home ([wiki](https://github.com/AxcelT/Big-Back-Behavior/wiki/Home) · [repo](wiki/Home.md)) | how the layers fit together, and a Flask → Spring translation table |
-| Model Layer ([wiki](https://github.com/AxcelT/Big-Back-Behavior/wiki/Model-Layer) · [repo](wiki/Model-Layer.md)) | entities, `@Entity`, why `Integer` and not `int` |
-| Repository Layer ([wiki](https://github.com/AxcelT/Big-Back-Behavior/wiki/Repository-Layer) · [repo](wiki/Repository-Layer.md)) | `JpaRepository`, derived queries, `Optional` |
-| Service Layer ([wiki](https://github.com/AxcelT/Big-Back-Behavior/wiki/Service-Layer) · [repo](wiki/Service-Layer.md)) | business rules, `@Transactional`, and why it is intentionally absent |
-| Controller Layer ([wiki](https://github.com/AxcelT/Big-Back-Behavior/wiki/Controller-Layer) · [repo](wiki/Controller-Layer.md)) | HTTP mapping, JSON serialization, DTOs |
-| Glossary ([wiki](https://github.com/AxcelT/Big-Back-Behavior/wiki/Glossary) · [repo](wiki/Glossary.md)) | beans, DI, JPA vs Hibernate, JPQL, starters |
+| [Home](https://github.com/AxcelT/Big-Back-Behavior/wiki/Home) | how the layers fit together, and a Flask → Spring translation table |
+| [Model Layer](https://github.com/AxcelT/Big-Back-Behavior/wiki/Model-Layer) | entities, `@Entity`, why `Integer` and not `int` |
+| [Repository Layer](https://github.com/AxcelT/Big-Back-Behavior/wiki/Repository-Layer) | `JpaRepository`, derived queries, `Optional` |
+| [Service Layer](https://github.com/AxcelT/Big-Back-Behavior/wiki/Service-Layer) | business rules, `@Transactional`, and why it is intentionally absent |
+| [Controller Layer](https://github.com/AxcelT/Big-Back-Behavior/wiki/Controller-Layer) | HTTP mapping, JSON serialization, DTOs |
+| [Glossary](https://github.com/AxcelT/Big-Back-Behavior/wiki/Glossary) | beans, DI, JPA vs Hibernate, JPQL, starters |
 
 All of it is written for someone whose background is Python/Flask rather than Java.
+
+Two docs stay in the repo, because they describe the code rather than the architecture:
+
+- **README.md** (this file) — what the project is and how to run it
+- **[DEV-CONTEXT.md](DEV-CONTEXT.md)** — where development currently stands, decisions made, and what to pick up next
+
+To edit the wiki, use the web UI or clone it — it is a **separate repository**, so it has its own history and is untouched by anything you push to `main`:
+
+```bash
+git clone https://github.com/AxcelT/Big-Back-Behavior.wiki.git
+```
 
 ---
 
@@ -175,10 +172,6 @@ Conventional-commit prefixes are used throughout the history: `feat:`, `fix:`, `
 
 Before opening a PR, run `./mvnw test`.
 
-If you add a layer, update that layer's page status line in the same change — the docs tracking reality is the point of them. **Update both copies**, or they drift: `wiki/` in this repo, and the published wiki, which is its own clone:
+If you add a layer, update that layer's wiki page status line as part of the same piece of work — the docs tracking reality is the point of them. Because the wiki is a separate repository, this cannot ride along in the code commit; it is a second push, and nothing will remind you. Treat it as part of "done."
 
-```bash
-git clone https://github.com/AxcelT/Big-Back-Behavior.wiki.git
-```
-
-The wiki clone has no CI and no review — a push to its `master` is live immediately.
+The wiki has no CI and no review — a push to its `master` is live immediately.
