@@ -92,7 +92,7 @@ Of the four conventional Spring layers, only the model exists:
 
 At startup Hibernate reads `FoodLog` and creates a `FOOD_LOG` table with `ID`, `FOOD_NAME`, and `CALORIES` columns. The table is real and populated-able from Java, but unreachable over HTTP.
 
-For what comes next and why, see [DEV-CONTEXT.md](DEV-CONTEXT.md).
+For what comes next, see the [project board](https://github.com/users/AxcelT/projects/5) and [open issues](https://github.com/AxcelT/Big-Back-Behavior/issues).
 
 ---
 
@@ -136,7 +136,7 @@ All of it is written for someone whose background is Python/Flask rather than Ja
 Two docs stay in the repo, because they describe the code rather than the architecture:
 
 - **README.md** (this file) — what the project is and how to run it
-- **[DEV-CONTEXT.md](DEV-CONTEXT.md)** — where development currently stands, decisions made, and what to pick up next
+- **[CLAUDE.md](CLAUDE.md)** — build commands, layout, and the settled decisions, for anyone (or anything) picking the project up cold
 
 To edit the wiki, use the web UI or clone it — it is a **separate repository**, so it has its own history and is untouched by anything you push to `main`:
 
