@@ -58,7 +58,7 @@ Both test starters are declared and currently unused — `@DataJpaTest` and `@We
 
 ## Settled decisions
 
-Do not re-litigate these without a reason; rationale is in [DEV-CONTEXT.md](DEV-CONTEXT.md) §2.
+Do not re-litigate these without a reason. The full reasoning for most of them lives on the wiki page for the layer it affects — `Service-Layer.md` for the missing service layer, `Model-Layer.md` for wrapper types, `Controller-Layer.md` and `Glossary.md` for DTOs, actuator exposure and the PostgreSQL migration order.
 
 - **Bottom-up, one layer per commit:** Model → Repository → Controller.
 - **No service layer until there is a real business rule.** A `FoodLogService` that only forwards to the repository is a file to open for nothing. It gets created in the same commit as the first non-HTTP `if`.
@@ -84,8 +84,22 @@ Pushing this repo does nothing to it, and it has no CI or review — a push is l
 
 **The wiki pages carry no build-status lines** — they were removed so the pages stay conceptual. Shipping a layer therefore does not oblige a wiki push; edit a page when the design changes or an explanation is wrong. Wiki code samples are deliberately idealized and linked to the real files; where a sample and the source differ, that is tracked work, not a doc bug.
 
-The two in-repo docs describe the code rather than the architecture, and both are **currently stale**: [README.md](README.md) and [DEV-CONTEXT.md](DEV-CONTEXT.md) still list the repository and controller layers as unbuilt, and DEV-CONTEXT's HEAD/commit timeline stops at `7ae30ee`. Refresh them when touching the layers they describe.
+Each document has one job, and none of them duplicates another:
+
+| Where | Holds |
+| --- | --- |
+| [README.md](README.md) | what the project is and how to run it |
+| CLAUDE.md (this file) | how to work in the repo, and the decisions that constrain new code |
+| the wiki | how the architecture works and *why* it is shaped that way |
+| commit and PR messages | why an individual change was made |
+| git, the [board](https://github.com/users/AxcelT/projects/5), and issues | what changed, what is next, what is broken |
+
+`DEV-CONTEXT.md` used to sit between these and was retired — it re-stated wiki rationale in a second uncoordinated copy, hand-maintained a commit timeline that `git log` already had, and went stale at `7ae30ee` because nothing could catch it. Do not reintroduce a file of that shape.
 
 ## Conventions
 
 Conventional-commit prefixes throughout the history: `feat:`, `fix:`, `chore:`, `docs:`. Work lands via PR from a `feat-*` branch. Run `./mvnw test` before opening one.
+
+**Commit messages carry the reasoning for a change — this is load-bearing.** Since no in-repo file records why an individual change was made, the commit is the only place that history exists. A subject line alone is not enough: say what the change does, and why this way rather than an obvious alternative. `Create FoodLogRepository.java` and `Update FoodLogRepository.java` (`6c8dc1d`, `a0372bd`) are the two commits that broke and then fixed the build, and neither says anything at all — that is the failure mode to avoid.
+
+Standing rules that constrain *future* commits do not belong in a commit message, because the commit they apply to has not happened yet. Those go in the Settled decisions section above, or on the relevant wiki page.
