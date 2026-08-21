@@ -68,6 +68,17 @@ Do not re-litigate these without a reason. The full reasoning for most of them l
 - **Actuator stays minimally exposed** — `health` only over HTTP. `/actuator/env` leaks credentials, `/actuator/heapdump` hands out a memory snapshot.
 - H2 console dependency is present but off. To browse the schema add `spring.h2.console.enabled=true`, restart, open `http://localhost:8081/h2-console` with JDBC URL `jdbc:h2:mem:testdb`, user `sa`, no password.
 
+## Known rough edges
+
+Not defects in the running app — things that will confuse a session meeting them cold. Delete a line when it stops being true.
+
+- **`spring.jpa.open-in-view` is never set**, so Spring logs a warning on every startup asking for it explicitly. `false` silences it and is the better default for an API: it stops lazy-loading queries firing during response rendering.
+- **`pom.xml` carries Initializr placeholders** — empty `<name/>`, `<description/>`, `<url/>`, and an empty `<license/>` that contradicts the MIT [LICENSE](LICENSE). Fill them in or delete the elements.
+- **Project identity is still Initializr default:** `groupId` `com.example`, `artifactId` `demo`, entry point `DemoApplication`. Renaming touches the package path *and* every wiki code sample, so it only ever gets more expensive.
+- **`Service-Layer.md` on the wiki imports packages that do not exist** — `com.example.demo.service`, `.model`, `.repository`. That sample will not compile if copied. It needs the flat-vs-sub-packages decision made first (see Architecture above); it is the one wiki page whose sample is wrong rather than merely idealized.
+- **`.vscode/launch.json` points at a `.env` that is not there.** Harmless, and `.vscode/` is gitignored, so it is local-only and a fresh clone never sees it.
+- **Local JDK is 21 while `pom.xml` targets 17.** Compiling 17 bytecode on a 21 toolchain is normal and builds green; CI pins the version explicitly.
+
 ## Documentation discipline
 
 **Check the wiki before answering anything architectural.** It is the only home for architecture docs, and it is expected to grow — new pages land there, not in this repo. Nothing in this repository explains *why* a layer is shaped the way it is; the wiki does.
