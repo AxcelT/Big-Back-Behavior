@@ -20,4 +20,4 @@ jobs:
           distribution: 'temurin'
           
       - name: Run Maven tests
-        run: ./mvnw -B test
+        run: ./mvnw -B test 
