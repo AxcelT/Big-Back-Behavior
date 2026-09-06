@@ -1,8 +1,14 @@
 package com.example.demo;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 public class CreateFoodLogRequest {
 
+    @NotBlank(message = "Food name cannot be empty")
     private String foodName;
+
+    @Positive(message = "Calories must be greater than zero")
     private Integer calories;
 
 
