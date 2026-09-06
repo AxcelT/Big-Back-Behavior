@@ -16,8 +16,12 @@ public class FoodLogController {
     }
 
     @PostMapping("/logs")
-    public FoodLog addLog(@RequestBody FoodLog newLog) {
-        return repository.save(newLog);
+    public FoodLog addLog(@RequestBody CreateFoodLogRequest request) {
+        FoodLog foodLog = new FoodLog();
+
+        foodLog.setFoodName(request.getFoodName());
+        foodLog.setCalories(request.getCalories());
+        return repository.save(foodLog);
     }
 
     @GetMapping("/logs")
