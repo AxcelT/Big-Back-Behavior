@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +18,7 @@ public class FoodLogController {
     }
 
     @PostMapping("/logs")
-    public FoodLog addLog(@RequestBody CreateFoodLogRequest request) {
+    public FoodLog addLog(@Valid @RequestBody CreateFoodLogRequest request) {
         FoodLog foodLog = new FoodLog();
 
         foodLog.setFoodName(request.getFoodName());
